@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service ID extractor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: white;
+            color: black;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .info {
+            text-align: right;
+            font-size: 0.8em;
+            color: red;
+        }
+
+        textarea, .output {
+            width: 100%;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        textarea {
+            height: 150px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+
+        .output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+
+        /* Dark mode styles */
+        .dark-mode {
+            background-color: #121212;
+            color: #f0f0f0;
+        }
+
+        .dark-mode textarea,
+        .dark-mode .output {
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+            border: 1px solid #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <button id="modeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+        <div class="info">
+            <div>Version: 1.0</div>
+            <div>Dan Thomas</div>
+        </div>
+    </div>
+
+    <h1>Enter Text to Filter</h1>
+    <textarea id="inputText" placeholder="Enter your lines here..."></textarea>
+    <br>
+    <button onclick="applyFilter()">Next</button>
+    <div class="output" id="output"></div>
+
+    <script>
+        function applyFilter() {
+            const inputText = document.getElementById('inputText').value;
+            const lines = inputText.split('\n');
+            const regex = /\b(AA\w*|AB\w*|AD\w*|UCA\w*|UCC\w*|VET\w*|VCT\w*|VEW\w*|ICE\w*|IPW\w*|MET\w*|SDA\w*)\b.*?(?=\s*-|\s*$)/g;
+            const filteredLines = lines.map(line => {
+                const match = line.match(regex);
+                return match ? match[0] : '';
+            }).filter(line => line !== '');
+            document.getElementById('output').textContent = filteredLines.join('\n');
+        }
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const button = document.getElementById('modeToggle');
+            body.classList.toggle('dark-mode');
+            button.textContent = body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+        }
+    </script>
+</body>
+</html>
